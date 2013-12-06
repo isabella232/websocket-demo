@@ -56,6 +56,7 @@ public class App implements Consumer {
 
     @Override
     public void consume(Object o) {
+        System.out.printf("Sending message to websocket peers: %s\n", o.toString());
         for (ServerSocket socket : sockets) {
             socket.consume(o);
         }
