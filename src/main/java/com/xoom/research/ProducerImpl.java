@@ -33,7 +33,6 @@ public class ProducerImpl implements Producer {
     @Override
     public void produce(Object o) {
         for (Consumer consumer : consumers) {
-            System.out.printf("Sending message: %s to consumer %s\n", o.toString(), consumer.getClass());
             consumer.consume(o.toString());
         }
     }
