@@ -21,13 +21,18 @@ public class ProducerImpl implements Producer {
     @Override
     public void start() {
         scheduledExecutorService.scheduleAtFixedRate(new Worker(), 2, 5, TimeUnit.SECONDS);
-        while (true) {
-            try {
-                produce(queue.take());
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    try {
+                        produce(queue.take());
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
             }
-        }
+        }, "fake data provider").start();
     }
 
     @Override

@@ -1,7 +1,7 @@
 <html>
 <head>
     <script>
-        var ws = new WebSocket("ws://localhost:8080/events/");
+        var ws = new WebSocket("ws://localhost:8080/events");
         ws.onopen = function () {
             // Web Socket is connected, send data using send()
             ws.send("Message to send");
