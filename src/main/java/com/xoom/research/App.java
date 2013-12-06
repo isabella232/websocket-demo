@@ -33,6 +33,7 @@ public class App implements Consumer {
                 .withServerEndpointConfig(config)
                 .build();
 
+        // Need this to deliver the initial html/javascript to the browser:  http://localhost:8080/index.html
         ServletConfiguration staticContentConfig = new ServletConfiguration.Builder()
                 .withServletClass(DefaultServlet.class)
                 .withPathSpec("/*")
