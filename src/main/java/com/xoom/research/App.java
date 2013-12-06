@@ -22,10 +22,9 @@ public class App implements Consumer {
     }
 
     private void run() throws Exception {
-        Configurator serverEndpointConfigurator = new Configurator();
         ServerEndpointConfig config = ServerEndpointConfig.Builder
                 .create(ServerSocket.class, "/events")
-                .configurator(serverEndpointConfigurator)
+                .configurator(new Configurator())
                 .build();
 
         WebSocketEndpointConfiguration wsconfig = new WebSocketEndpointConfiguration.Builder()
@@ -80,6 +79,9 @@ public class App implements Consumer {
         private class WebSocketModule extends AbstractModule {
             @Override
             protected void configure() {
+                // https://code.google.com/p/google-guice/wiki/Bindings
+                // Bind types to impls here.  The only type we need for now is ServerSocket.class, which is already a concrete
+                // type, so no need to map it to anything else.
             }
         }
     }
