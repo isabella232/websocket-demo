@@ -1,4 +1,4 @@
-### Websocket demo
+### End to end Websocket demo based on embedded Jetty 9
 
 Clone and start the server:
 
