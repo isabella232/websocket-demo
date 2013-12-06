@@ -15,7 +15,6 @@ import java.util.Set;
 
 public class App implements Consumer {
 
-    private Configurator serverEndpointConfigurator;
     private Set<ServerSocket> sockets = new HashSet<ServerSocket>();
 
     public static void main(String[] args) throws Exception {
@@ -23,7 +22,7 @@ public class App implements Consumer {
     }
 
     private void run() throws Exception {
-        serverEndpointConfigurator = new Configurator();
+        Configurator serverEndpointConfigurator = new Configurator();
         ServerEndpointConfig config = ServerEndpointConfig.Builder
                 .create(ServerSocket.class, "/events")
                 .configurator(serverEndpointConfigurator)
