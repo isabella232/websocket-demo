@@ -46,7 +46,7 @@ public class App implements Consumer {
                 .withServletConfiguration(staticContentConfig)
                 .build();
 
-        GraphiteProducer producer = new GraphiteProducer();
+        ProducerImpl producer = new ProducerImpl();
         producer.add(this);
         producer.start();
 
