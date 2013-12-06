@@ -1,6 +1,8 @@
 apply plugin: 'java'
 apply plugin: 'application'
 
+mainClassName = "com.xoom.research.App"
+
 ext.versions = [
         logback: "1.0.13",
         guice: "3.0",
@@ -38,14 +40,3 @@ tasks.withType(Test) {
     systemProperties = System.getProperties()
     testLogging.showStandardStreams = true
 }
-
-/*
-Oft-used, cut and past-ready stuff.
-jersey: "1.17"
-testCompile "com.sun.jersey:jersey-core:${versions.jersey}"
-testCompile "com.sun.jersey:jersey-json:${versions.jersey}"
-testCompile "com.sun.jersey:jersey-server:${versions.jersey}"
-testCompile "com.sun.jersey:jersey-servlet:${versions.jersey}"
-testCompile "com.sun.jersey:jersey-client:${versions.jersey}"
-testCompile "com.xoom.oss:feathercon:1.3.2"
-*/

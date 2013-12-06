@@ -7,10 +7,12 @@ import javax.websocket.OnError;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
+import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
+@ServerEndpoint(value = "/events")
 public class ServerSocket implements Consumer {
     private final Set<Session> sessions = new HashSet<Session>();
 

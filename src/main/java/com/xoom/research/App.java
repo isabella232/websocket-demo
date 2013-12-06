@@ -79,7 +79,6 @@ public class App implements Consumer {
         private class WebSocketModule extends AbstractModule {
             @Override
             protected void configure() {
-                bind(ServerSocket.class).to(ServerSocket.class);  // Guice default behavior, but show something here.
             }
         }
     }
