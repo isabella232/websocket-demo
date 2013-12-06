@@ -16,6 +16,13 @@ import java.util.Set;
 public class App implements Consumer {
 
     private Set<ServerSocket> sockets = new HashSet<ServerSocket>();
+    private final Injector injector = Guice.createInjector(new AbstractModule() {
+        @Override
+        protected void configure() {
+            // type to concrete class bindings
+            bind(Producer.class).to(ProducerImpl.class);
+        }
+    });
 
     public static void main(String[] args) throws Exception {
         new App().run();
@@ -44,7 +51,7 @@ public class App implements Consumer {
                 .withServletConfiguration(staticContentConfig)
                 .build();
 
-        ProducerImpl producer = new ProducerImpl();
+        Producer producer = injector.getInstance(Producer.class);
         producer.add(this);
         producer.start();
 
@@ -61,28 +68,12 @@ public class App implements Consumer {
     }
 
     public class Configurator extends ServerEndpointConfig.Configurator {
-
-        private final Injector injector;
-
-        public Configurator() {
-            injector = Guice.createInjector(new WebSocketModule());
-        }
-
         // The locus of Endpoint dependency injection with wired in collaborators.
         @Override
         public <T> T getEndpointInstance(Class<T> endpointClass) throws InstantiationException {
             T instance = injector.getInstance(endpointClass);
             sockets.add((ServerSocket) instance);
             return instance;
-        }
-
-        private class WebSocketModule extends AbstractModule {
-            @Override
-            protected void configure() {
-                // https://code.google.com/p/google-guice/wiki/Bindings
-                // Bind types to impls here.  The only type we need for now is ServerSocket.class, which is already a concrete
-                // type, so no need to map it to anything else.
-            }
         }
     }
 }

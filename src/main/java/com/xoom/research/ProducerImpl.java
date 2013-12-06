@@ -50,7 +50,7 @@ public class ProducerImpl implements Producer {
     private class Worker implements Runnable {
         @Override
         public void run() {
-            String json = String.format("{ \"date\": \"%s\"}", new Date().toString());
+            String json = String.format("{ date: \"%s\"}", new Date().toString());
             try {
                 queue.put(json);
             } catch (InterruptedException e) {
