@@ -1,5 +1,6 @@
 package com.xoom.research;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -10,13 +11,9 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class ProducerImpl implements Producer {
-    private final Set<Consumer> consumers = new HashSet<Consumer>();
-    private final ScheduledExecutorService scheduledExecutorService;
+    private final Set<Consumer> consumers = Collections.synchronizedSet(new HashSet<Consumer>());
+    private final ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
     private final BlockingQueue<String> queue = new LinkedBlockingQueue<String>();
-
-    public ProducerImpl() {
-        scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
-    }
 
     @Override
     public void start() {
