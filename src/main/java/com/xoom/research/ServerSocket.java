@@ -40,7 +40,8 @@ public class ServerSocket implements Consumer {
             try {
                 session.getBasicRemote().sendObject(o.toString());
             } catch (IOException e) {
-                e.printStackTrace();
+                sessions.remove(session);
+                System.out.printf("Session closed (%s, %s)\n", e.getMessage(), e.getCause());
             } catch (EncodeException e) {
                 e.printStackTrace();
             }
