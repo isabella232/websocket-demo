@@ -10,28 +10,26 @@ import com.xoom.oss.feathercon.WebSocketEndpointConfiguration;
 import org.eclipse.jetty.servlet.DefaultServlet;
 
 import javax.websocket.server.ServerEndpointConfig;
-import java.util.HashSet;
-import java.util.Set;
 
 public class App implements Consumer {
-
-    private Set<ServerSocket> sockets = new HashSet<ServerSocket>();
     private final Injector injector = Guice.createInjector(new AbstractModule() {
         @Override
         protected void configure() {
-            // type to concrete class bindings
             bind(Producer.class).to(ProducerImpl.class);
         }
     });
+
+    private Configurator serverEndpointConfigurator;
 
     public static void main(String[] args) throws Exception {
         new App().run();
     }
 
     private void run() throws Exception {
+        serverEndpointConfigurator = injector.getInstance(Configurator.class);
         ServerEndpointConfig config = ServerEndpointConfig.Builder
                 .create(ServerSocket.class, "/events")
-                .configurator(new Configurator())
+                .configurator(serverEndpointConfigurator)
                 .build();
 
         WebSocketEndpointConfiguration wsconfig = new WebSocketEndpointConfiguration.Builder()
@@ -61,19 +59,9 @@ public class App implements Consumer {
 
     @Override
     public void consume(Object o) {
-        System.out.printf("Sending message to websocket peers: %s\n", o.toString());
-        for (ServerSocket socket : sockets) {
+        for (ServerSocket socket : serverEndpointConfigurator.getSockets()) {
             socket.consume(o);
         }
     }
 
-    public class Configurator extends ServerEndpointConfig.Configurator {
-        // The locus of Endpoint dependency injection with wired in collaborators.
-        @Override
-        public <T> T getEndpointInstance(Class<T> endpointClass) throws InstantiationException {
-            T instance = injector.getInstance(endpointClass);
-            sockets.add((ServerSocket) instance);
-            return instance;
-        }
-    }
 }
